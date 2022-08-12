@@ -18,8 +18,8 @@ function App() {
   const sliderUpdate = () => {
     const timerInterval = setInterval(() => {
       console.log("interval running");
-      setcurrentTime(audio.current.currentTime);
-    }, 1);
+      setcurrentTime(Math.floor(audio.current.currentTime));
+    }, 100);
     setTimer(timerInterval);
   };
 
@@ -28,8 +28,8 @@ function App() {
     // console.log("audio.current Reached to Play btn : " + audio);
 
     if (url != undefined) {
-      setDuration(audio.current.duration);
-      setcurrentTime(audio.current.currentTime);
+      setDuration(Math.floor(audio.current.duration));
+      setcurrentTime(Math.floor(audio.current.currentTime));
       sliderUpdate();
       audio.current.play();
       setPlayericon(false);
@@ -52,16 +52,14 @@ function App() {
   //   audio.current = new Audio(url);
   // }, []);
   useEffect(() => {
-    // console.log("destruction check");
-    if (url != undefined) {
-      if (currentTime === duration) {
-        console.log("stop everything");
-        pause();
-        clearInterval(timer);
-        setPlayericon(true);
-      }
+    console.log("destruction check");
+    if (currentTime === duration) {
+      console.log("stop everything");
+      pause();
+      clearInterval(timer);
+      setPlayericon(true);
     }
-  }, [currentTime]);
+  }, []);
 
   // useEffect(() => {
   //   first
@@ -72,17 +70,10 @@ function App() {
     <>
       <div className="container">
         <h1>Submit your Song URL to play song</h1>
-        <div className="demo">
-          <p
-            onClick={() => {
-              navigator.clipboard.writeText(
-                "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/5a/33/4b/5a334b5e-a966-1d5e-fba7-2092dedcefcb/mzaf_6087715471338854682.plus.aac.p.m4a"
-              );
-            }}
-          >
-            Click Here to Get a Demo URL{" "}
-          </p>
-        </div>
+        <input
+          type="text"
+          value="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/5a/33/4b/5a334b5e-a966-1d5e-fba7-2092dedcefcb/mzaf_6087715471338854682.plus.aac.p.m4a"
+        />
 
         <input
           className="url-input"
@@ -97,17 +88,14 @@ function App() {
         <div className="player">
           <h1 className="heading">Cipher Audio Player</h1>
           <div className="slider-container">
-            <span className="audio-time">{Math.floor(currentTime)}</span>
             <input
               type="range"
               id="music"
-              step="0.01"
               value={currentTime}
               name="vol"
               min="0"
               max={duration}
             />
-            <span className="audio-time">{Math.floor(duration)}</span>
           </div>
           <button className="btn" onClick={playericon ? play : pause}>
             {playericon ? (
